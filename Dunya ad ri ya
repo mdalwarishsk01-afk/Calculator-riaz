@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMI Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .calculator {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .slider-container {
+            margin: 15px 0;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: #ddd;
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .value-display {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .tenure-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .tenure-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tenure-option.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #0056b3;
+        }
+        
+        .result {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        .emi-amount {
+            font-size: 32px;
+            font-weight: bold;
+            color: #007bff;
+            margin: 10px 0;
+        }
+        
+        .result-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .detail-item {
+            text-align: center;
+        }
+        
+        .detail-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .detail-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>EMI Calculator</h1>
+        <p class="subtitle">Calculate your Equated Monthly Installment (EMI)</p>
+        
+        <div class="input-group">
+            <label for="loanAmount">Loan Amount ($)</label>
+            <input type="number" id="loanAmount" value="418000" min="1000" max="100000000">
+            <div class="slider-container">
+                <input type="range" id="loanAmountSlider" min="1000" max="100000000" value="418000" step="1000">
+            </div>
+            <div class="value-display">
+                <span>$1,000</span>
+                <span>$10,00,00,000</span>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="interestRate">Interest Rate (% per annum)</label>
+            <input type="number" id="interestRate" value="5.02" min="1" max="30" step="0.01">
+            <div class="slider-container">
+                <input type="range" id="interestRateSlider" min="1" max="30" value="5.02" step="0.01">
+            </div>
+            <div class="value-display">
+                <span>1%</span>
+                <span>30%</span>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="loanTenure">Loan Tenure</label>
+            <input type="number" id="loanTenure" value="10" min="1" max="30">
+            <div class="slider-container">
+                <input type="range" id="loanTenureSlider" min="1" max="30" value="10" step="1">
+            </div>
+            <div class="tenure-options">
+                <div class="tenure-option active" id="yearsOption">Years</div>
+                <div class="tenure-option" id="monthsOption">Months</div>
+            </div>
+            <div class="value-display">
+                <span>1</span>
+                <span>30</span>
+            </div>
+        </div>
+        
+        <button class="btn" id="calculateBtn">Calculate EMI</button>
+        
+        <div class="result">
+            <div class="detail-label">Your Monthly Installment (EMI)</div>
+            <div class="emi-amount" id="emiValue">$4,434.15</div>
+            <div class="result-details">
+                <div class="detail-item">
+                    <div class="detail-value" id="totalPayment">$532,098.00</div>
+                    <div class="detail-label">Total Payment</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-value" id="totalInterest">$114,098.00</div>
+                    <div class="detail-label">Total Interest</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loanAmountInput = document.getElementById('loanAmount');
+            const loanAmountSlider = document.getElementById('loanAmountSlider');
+            const interestRateInput = document.getElementById('interestRate');
+            const interestRateSlider = document.getElementById('interestRateSlider');
+            const loanTenureInput = document.getElementById('loanTenure');
+            const loanTenureSlider = document.getElementById('loanTenureSlider');
+            const yearsOption = document.getElementById('yearsOption');
+            const monthsOption = document.getElementById('monthsOption');
+            const calculateBtn = document.getElementById('calculateBtn');
+            
+            const emiValue = document.getElementById('emiValue');
+            const totalPayment = document.getElementById('totalPayment');
+            const totalInterest = document.getElementById('totalInterest');
+            
+            let tenureUnit = 'years';
+            
+            // Sync inputs and sliders
+            loanAmountInput.addEventListener('input', function() {
+                loanAmountSlider.value = this.value;
+                calculateEMI();
+            });
+            
+            loanAmountSlider.addEventListener('input', function() {
+                loanAmountInput.value = this.value;
+                calculateEMI();
+            });
+            
+            interestRateInput.addEventListener('input', function() {
+                interestRateSlider.value = this.value;
+                calculateEMI();
+            });
+            
+            interestRateSlider.addEventListener('input', function() {
+                interestRateInput.value = this.value;
+                calculateEMI();
+            });
+            
+            loanTenureInput.addEventListener('input', function() {
+                loanTenureSlider.value = this.value;
+                calculateEMI();
+            });
+            
+            loanTenureSlider.addEventListener('input', function() {
+                loanTenureInput.value = this.value;
+                calculateEMI();
+            });
+            
+            // Tenure unit toggle
+            yearsOption.addEventListener('click', function() {
+                yearsOption.classList.add('active');
+                monthsOption.classList.remove('active');
+                tenureUnit = 'years';
+                calculateEMI();
+            });
+            
+            monthsOption.addEventListener('click', function() {
+                monthsOption.classList.add('active');
+                yearsOption.classList.remove('active');
+                tenureUnit = 'months';
+                calculateEMI();
+            });
+            
+            calculateBtn.addEventListener('click', calculateEMI);
+            
+            function calculateEMI() {
+                const principal = parseFloat(loanAmountInput.value);
+                const annualRate = parseFloat(interestRateInput.value);
+                const monthlyRate = annualRate / 100 / 12;
+                
+                let months;
+                if (tenureUnit === 'years') {
+                    months = parseFloat(loanTenureInput.value) * 12;
+                } else {
+                    months = parseFloat(loanTenureInput.value);
+                }
+                
+                // EMI calculation formula
+                const emi = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / 
+                           (Math.pow(1 + monthlyRate, months) - 1);
+                
+                const totalPayable = emi * months;
+                const totalInt = totalPayable - principal;
+                
+                // Update results
+                emiValue.textContent = '$' + emi.toFixed(2);
+                totalPayment.textContent = '$' + totalPayable.toFixed(2);
+                totalInterest.textContent = '$' + totalInt.toFixed(2);
+            }
+            
+            // Initial calculation
+            calculateEMI();
+        });
+    </script>
+</body>
+</html>
